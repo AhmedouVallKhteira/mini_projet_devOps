@@ -1,0 +1,29 @@
+name: Docker_Project
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-cd:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t ahmedouvall/mini_pro_dev_ops:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push ahmedouvall/mini_pro_dev_ops:latest
+        if: ${{ success() }} 
